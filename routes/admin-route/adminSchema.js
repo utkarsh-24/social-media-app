@@ -11,11 +11,5 @@ const adminSetupSchema = {
     },
   },
 };
-const adminDetails = {
-  id: 123,
-  user_role: "admin",
-  email: "utkarsh24092000@gmail.com",
-  password: "utkarsh",
-};
 
-module.exports = { adminSetupSchema,adminDetails };
+module.exports = { adminSetupSchema };

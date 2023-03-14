@@ -15,6 +15,10 @@ const schema = {
     AWS_SECRET_ACCESS: {
       type: 'string',
       default:"aws_secret_access"
+    },
+    ADMIN_CREDENTIALS : {
+      type: 'string',
+      default: ""
     }
   }
 }

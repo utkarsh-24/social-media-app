@@ -8,28 +8,18 @@ const {
   QueryCommand,
 } = require("@aws-sdk/client-dynamodb");
 const { PutCommand, ScanCommand } = require("@aws-sdk/lib-dynamodb");
-const fastify = require("fastify");
-
-
-// const client = new DynamoDBClient({
-//   region: "us-west-2",
-//   credentials: {
-//     accessKeyId: "fastify.config.AWS_ACCESS_KEY",
-//     secretAccessKey: fastify.config.AWS_SECRET_ACCESS,
-//   },
-// });
 
 const clientObject = (fastify) => {
   return new DynamoDBClient({
     region: "us-west-2",
-    credentials :{
-      accessKeyId : fastify.config.AWS_ACCESS_KEY,
-      secretAccessKey: fastify.config.AWS_SECRET_ACCESS
-    }
-  })
-}
+    credentials: {
+      accessKeyId: fastify.config.AWS_ACCESS_KEY,
+      secretAccessKey: fastify.config.AWS_SECRET_ACCESS,
+    },
+  });
+};
 
-const createTable = async (fastify,tableSchema) => {
+const createTable = async (fastify, tableSchema) => {
   let client = clientObject(fastify);
   let result = await client.send(new CreateTableCommand(tableSchema));
   if (result.TableDescription != undefined) {
@@ -41,16 +31,16 @@ const createTable = async (fastify,tableSchema) => {
     };
   }
 };
-const putIntoDynamo = async (fastify,params) => {
+const putIntoDynamo = async (fastify, params) => {
   let client = clientObject(fastify);
-  if (params.id == undefined) {
+  if (params.Item.id == undefined) {
     let id = kuuid.id();
     params.Item.id = id;
   }
   await client.send(new PutCommand(params));
 };
 
-const validateBearer = async (fastify,query) => {
+const validateBearer = async (fastify, query) => {
   let client = clientObject(fastify);
   let result = await client.send(new QueryCommand(query));
   if (result.Items.length == 0) {
@@ -59,7 +49,7 @@ const validateBearer = async (fastify,query) => {
     return { success: true, Items: result.Items };
   }
 };
-const scanDb = async (fastify,query) => {
+const scanDb = async (fastify, query) => {
   let client = clientObject(fastify);
   let result = await client.send(new ScanCommand(query));
   if (result.Items.length == 0) {
@@ -68,7 +58,7 @@ const scanDb = async (fastify,query) => {
     return { success: true, Items: result.Items };
   }
 };
-const findUserByEmail = async (fastify,email) => {
+const findUserByEmail = async (fastify, email) => {
   let client = clientObject(fastify);
   const query = {
     TableName: "user_details",
