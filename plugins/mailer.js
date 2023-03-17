@@ -16,7 +16,7 @@ module.exports = fp(async function (fastify, opts) {
       secure: true, // use TLS
       auth: {
         user: 'utkarshpatel24092000@gmail.com',
-        pass: ''
+        pass: 'Bahadur@24Utkarsh'
       }
     }
   })

@@ -24,7 +24,35 @@ module.exports = async function (fastify, opts) {
       }
     }
   });
-
+  fastify.get('/send', (request, reply) => {
+    const { mailer } = fastify
+  
+    mailer.sendMail({
+      to: 'brijbahadurpatel@gmail.com',
+      subject: 'example',
+      text: 'hello world !'
+    }, (errors, info) => {
+      if (errors) {
+        fastify.log.error(errors)
+  
+        reply.status(500)
+        return {
+          status: 'error',
+          message: 'Something went wrong'
+        }
+      }
+  
+      reply.status(200)
+      return {
+        status: 'ok',
+        message: 'Email successfully sent',
+        info: {
+          from: info.from, // John Doe <john.doe@example.tld>
+          to: info.to, // ['someone@example.tld']
+        }
+      }
+    })
+  })
   fastify.register(require("./user-route/user"), { prefix: "user" });
   fastify.register(require("./admin-route/admin"), { prefix: "admin" });
 };
